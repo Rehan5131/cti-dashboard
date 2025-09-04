@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Ingestion Trends</h2>
+  <div id="ingestionChart"></div>
+
+  <h2 class="mt-5">IOC Analytics (Boxplot)</h2>
+  <div id="boxplotChart"></div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+  // --- Ingestion Trend Line Chart ---
+  fetch("/api/metrics")
+    .then(res => res.json())
+    .then(data => {
+      const dates = data.daily.map(d => d.bucket);
+      const counts = data.daily.map(d => d.count);
+
+      const trace = {
+        x: dates,
+        y: counts,
+        mode: 'lines+markers',
+        type: 'scatter',
+        name: 'Daily Ingested IOCs',
+        line: { color: 'blue' }
+      };
+
+      Plotly.newPlot("ingestionChart", [trace], {
+        title: "Daily IOC Ingestion",
+        xaxis: { title: "Date" },
+        yaxis: { title: "Count" }
+      });
+    });
+
+  // --- Boxplot Chart for IOC Types ---
+  fetch("/api/boxplot")
+    .then(res => res.json())
+    .then(data => {
+      const types = data.map(d => d._id);
+      const counts = data.map(d => d.count);
+
+      const trace = {
+        y: counts,
+        x: types,
+        type: "box",
+        name: "IOC Types Distribution",
+        boxpoints: "all",
+        jitter: 0.5,
+        marker: { color: "orange" }
+      };
+
+      Plotly.newPlot("boxplotChart", [trace], {
+        title: "IOC Types / Distribution"
+      });
+    });
+</script>
+{% endblock %}

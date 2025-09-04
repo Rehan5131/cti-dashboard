@@ -1,0 +1,41 @@
+<!-- templates/base.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}CTI Dashboard{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+  <header class="bg-indigo-600 text-white p-4 shadow">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <h1 class="text-xl font-semibold">CTI Dashboard</h1>
+        <nav class="space-x-3 text-sm opacity-90">
+          <a href="{{ url_for('dashboard') }}" class="hover:underline">Dashboard</a>
+          <a href="{{ url_for('charts') }}" class="hover:underline">Charts</a>
+          <a href="{{ url_for('history') }}" class="hover:underline">History</a>
+        </nav>
+      </div>
+      <!-- Removed Export button from header per request -->
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2 mb-4">
+          {% for cat, msg in messages %}
+            <div class="p-3 rounded {{ 'bg-green-100 text-green-800' if cat=='success' else ('bg-yellow-100 text-yellow-800' if cat=='warning' else 'bg-red-100 text-red-800') }}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

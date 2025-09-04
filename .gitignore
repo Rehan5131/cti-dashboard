@@ -1,0 +1,29 @@
+# Ignore environment variables (API keys, secrets, etc.)
+.env
+
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders
+venv/
+env/
+.venv/
+ENV/
+
+# Database files (if you use sqlite for testing)
+*.sqlite3
+
+# VS Code settings
+.vscode/
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Instance folder (Flask specific)
+instance/

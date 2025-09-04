@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.navbar {
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: white;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.container {
+    margin: 20px auto;
+    max-width: 900px;
+}

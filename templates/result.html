@@ -1,0 +1,96 @@
+<!-- templates/result.html -->
+{% extends "base.html" %}
+{% block title %}Lookup Result{% endblock %}
+{% block content %}
+<h2 class="text-xl font-semibold mb-4">Lookup Result</h2>
+
+<div class="grid md:grid-cols-2 gap-4">
+
+  <!-- Resolved summary -->
+  <div class="bg-white p-4 rounded shadow">
+    <h3 class="font-semibold mb-2">Summary</h3>
+    <table class="w-full text-sm">
+      <tr><td class="text-gray-600 w-32">Input</td><td>{{ query }}</td></tr>
+      <tr><td class="text-gray-600">Resolved</td><td>{{ resolved }}</td></tr>
+      <tr><td class="text-gray-600">Detected as</td><td class="uppercase">{{ kind }}</td></tr>
+    </table>
+  </div>
+
+  <!-- Local DB -->
+  <div class="bg-white p-4 rounded shadow">
+    <h3 class="font-semibold mb-2">Local DB</h3>
+    {% if local %}
+      <table class="w-full text-sm">
+        <tr><td class="text-gray-600 w-32">Value</td><td>{{ local.value }}</td></tr>
+        <tr><td class="text-gray-600">Type</td><td>{{ local.type }}</td></tr>
+        <tr><td class="text-gray-600">Sources</td><td>{{ local.sources | join(', ') }}</td></tr>
+        <tr><td class="text-gray-600">First Seen</td><td>{{ local.first_seen }}</td></tr>
+        <tr><td class="text-gray-600">Last Seen</td><td>{{ local.last_seen }}</td></tr>
+        <tr><td class="text-gray-600">Tags</td><td>{{ local.tags | join(', ') }}</td></tr>
+      </table>
+    {% else %}
+      <div class="text-sm text-gray-500">Not found in local DB.</div>
+    {% endif %}
+  </div>
+
+  <!-- VirusTotal -->
+  <div class="bg-white p-4 rounded shadow md:col-span-2">
+    <div class="flex items-center justify-between">
+      <h3 class="font-semibold mb-2">VirusTotal</h3>
+      {% if vt_error %}
+        <span class="text-xs text-red-600">{{ vt_error }}</span>
+      {% endif %}
+    </div>
+    {% if vt %}
+      <pre class="bg-gray-50 p-2 rounded text-xs overflow-auto">{{ vt | tojson(indent=2) }}</pre>
+    {% else %}
+      <div class="text-sm text-gray-500">No VirusTotal data available.</div>
+    {% endif %}
+  </div>
+
+  <!-- AbuseIPDB -->
+  {% if kind == 'ip' %}
+  <div class="bg-white p-4 rounded shadow md:col-span-2">
+    <h3 class="font-semibold mb-2">AbuseIPDB</h3>
+    {% if abuse %}
+      <pre class="bg-gray-50 p-2 rounded text-xs overflow-auto">{{ abuse | tojson(indent=2) }}</pre>
+    {% else %}
+      <div class="text-sm text-gray-500">No AbuseIPDB data available.</div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Tagging + Type (below result) -->
+  <div class="bg-white p-4 rounded shadow md:col-span-2">
+    <h3 class="font-semibold mb-3">Save / Tag this IOC</h3>
+    <form action="{{ url_for('tag_from_result') }}" method="post" class="grid md:grid-cols-3 gap-3">
+      <div>
+        <label class="block text-xs text-gray-500 mb-1">IOC Value</label>
+        <input name="value" value="{{ resolved }}" class="w-full border rounded p-2" required>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-1">IOC Type</label>
+        <select name="ioc_type" class="w-full border rounded p-2">
+          <option value="">(auto/keep)</option>
+          <option value="ip" {{ 'selected' if kind=='ip' else '' }}>IP</option>
+          <option value="domain" {{ 'selected' if kind=='domain' else '' }}>Domain</option>
+          <option value="url" {{ 'selected' if kind=='url' else '' }}>URL</option>
+          <option value="hash" {{ 'selected' if kind=='hash' else '' }}>Hash</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-1">Tag</label>
+        <input name="tag" placeholder="e.g., phishing, c2" class="w-full border rounded p-2">
+      </div>
+      <div class="md:col-span-3">
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">Save / Tag IOC</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<div class="mt-4">
+  <a class="bg-indigo-600 text-white px-4 py-2 rounded" href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</div>
+{% endblock %}
