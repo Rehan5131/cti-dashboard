@@ -46,17 +46,19 @@ It allows security analysts to **lookup, tag, store, and visualize IOCs (Indicat
 ```bash
 git clone https://github.com/your-username/cti-dashboard.git
 cd cti-dashboard
+```
 
-### 2. Clone the Repository### 
+### 2. Create Virtual Environment### 
 ```bash
 python -m venv venv
 source venv/bin/activate   # On Linux/Mac
 venv\Scripts\activate      # On Windows
+```
 
 ### 3. Install Requirements### 
 ```bash
 pip install -r requirements.txt
-
+```
 ### 4. Configure Environment Variables### 
 #Create a .env file in the root folder:#
 ```bash
@@ -65,13 +67,12 @@ MONGO_URI=mongodb://localhost:27017/ctidb
 VIRUSTOTAL_API_KEY=your-virustotal-key
 ABUSEIPDB_API_KEY=your-abuseipdb-key
 INGEST_INTERVAL_MIN=10
+```
 
 ### Run the App### 
 ```bash
 python app.py
-
-### 2. Clone the Repository### 
-```bash
+```
 
 ## Project Structure
 ```bash
@@ -96,6 +97,7 @@ cti-dashboard/
 │── static/
 │   └── css/ js/           # Tailwind + Chart.js
 └── .env                   # API keys & configs
+```
 
 ## ⚠️ Notes
 - Free API keys (VirusTotal/AbuseIPDB) may have rate limits.
