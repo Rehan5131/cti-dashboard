@@ -42,25 +42,25 @@ It allows security analysts to **lookup, tag, store, and visualize IOCs (Indicat
 
 ## 📦 Installation
 
-### 1. Clone the Repository###
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/cti-dashboard.git
 cd cti-dashboard
 ```
 
-### 2. Create Virtual Environment### 
+### 2. Create Virtual Environment
 ```bash
 python -m venv venv
 source venv/bin/activate   # On Linux/Mac
 venv\Scripts\activate      # On Windows
 ```
 
-### 3. Install Requirements### 
+### 3. Install Requirements
 ```bash
 pip install -r requirements.txt
 ```
-### 4. Configure Environment Variables### 
-#Create a .env file in the root folder:#
+### 4. Configure Environment Variables
+#Create a .env file in the root folder:
 ```bash
 SECRET_KEY=your-secret-key
 MONGO_URI=mongodb://localhost:27017/ctidb
